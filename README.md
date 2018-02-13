@@ -23,8 +23,10 @@ This section gives an overview of the project dependencies and the development e
 If you are a developer, and you want to use the code for modifying it and making your own version of it, then you would have to install a few modules to be able to work with the code; as the modules that I have used don't come by default with Python Installation. The installation and any details that i discuss here are for windows development environment. You can Google out the results for other OS or wait for we to update it here.
 In order to install the modules you have to open command prompt in administrator mode (if you have not provided full access to CMD by default).
 
-* Type ```pip install beautifulsoup4``` and press enter to install **BeautifulSoup** module.
-* Type ```pip install requests``` and press enter to install **requests** module.
-* Type ```pip install pytube``` and press enter to install **pytube** module.
-* Type ```pip install pytube``` and press enter to install **pytube** module.
-* Type ```pip install pypiwin32``` and press enter to install **win32com** module.
+* Type ```pip install beautifulsoup4``` and press enter to install **BeautifulSoup** or download the proper version from https://pypi.python.org/pypi/beautifulsoup4 
+
+* Type ```pip install requests``` and press enter to install **requests** or visit https://pypi.python.org/pypi/requests and download the module.
+
+* Type ```pip install pytube``` and press enter to install **pytube** or visit https://pypi.python.org/pypi/pytube/ and download the module.
+
+* Type ```pip install pypiwin32``` and press enter to install **win32com** or visit https://pypi.python.org/pypi/pypiwin32 and download the module.
