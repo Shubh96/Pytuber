@@ -1,10 +1,9 @@
 from pytube import YouTube
 import requests
-import sys
 from bs4 import BeautifulSoup
 import win32com.client as wincl
-#from tkinter import *
-#from tkinter import filedialog
+from tkinter import *
+from tkinter import filedialog
 
 speaker = wincl.Dispatch("SAPI.SpVoice")
 
@@ -52,18 +51,26 @@ print("Press any other key to exit")
 userMenuChoice = int(input("Enter your choice: "))
 
 if userMenuChoice == 1:
-    speaker.Speak("Enter download location")
-    download_location = input("Enter Download Location: ")
+
     speaker.Speak("Enter the playlist link")
     playlist_link_input = input('Enter the playlist link: ')
+
+    speaker.Speak("Select download location")
+    download_location = filedialog.askdirectory()
+
     playlist_generate()
+
 elif userMenuChoice == 2:
-    speaker.Speak("Enter download location")
-    download_location = input("Enter Download Location: ")
+
     speaker.Speak("Enter the video link")
     playlist_link_input = input('Enter the video link: ')
+
+    speaker.Speak("Select download location")
+    download_location = filedialog.askdirectory()
+
     speaker.Speak("Downloading Video")
     video_download(playlist_link_input)
+
     speaker.Speak("Video downloaded")
 else:
     speaker.Speak("Thanks for using Pytuber.")
