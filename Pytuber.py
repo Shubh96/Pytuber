@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import win32com.client as wincl
 from tkinter import *
 from tkinter import filedialog
-
+import os
 # ========================initializing the speaker voice and validation regex===========================
 speaker = wincl.Dispatch("SAPI.SpVoice")
 
@@ -81,43 +81,52 @@ def create_playlist(pl_anchor):
 def quit():
     speaker.Speak("Thanks for using Pytuber.")
     sys.exit(0)
+
 # ========================================global statements========================================
+use_again = 'y'
 
-speaker.Speak("Press 1 to download a playlist")
-print("1. Download a playlist")
+while use_again == 'Y' or use_again == 'y':
+    os.system('cls')
+    speaker.Speak("Press 1 to download a playlist")
+    print("1. Download a playlist")
 
-speaker.Speak("Press 2 to download single video")
-print("2. Download single video")
+    speaker.Speak("Press 2 to download single video")
+    print("2. Download single video")
 
-speaker.Speak("Press any other key to exit")
-print("Press any other key to exit")
+    speaker.Speak("Press any other key to exit")
+    print("Press any other key to exit")
 
-userMenuChoice = input("Enter your choice: ")
-
-while not userMenuChoice.isdigit():
-    speaker.Speak("Invalid choice. Please, enter a digit")
     userMenuChoice = input("Enter your choice: ")
 
-if userMenuChoice == 1:
+    while not userMenuChoice.isdigit():
+        speaker.Speak("Invalid choice. Please, enter a digit")
+        userMenuChoice = input("Enter your choice: ")
 
-    speaker.Speak("Select download location")
-    download_location = filedialog.askdirectory()
+    if int(userMenuChoice) == 1:
 
-    speaker.Speak("Enter the playlist link")
-    playlist_link_input = input('Enter the playlist link: ')
+        speaker.Speak("Select download location")
+        download_location = filedialog.askdirectory()
 
-    playlist_generate(playlist_link_input)
+        speaker.Speak("Enter the playlist link")
+        playlist_link_input = input('Enter the playlist link: ')
 
-elif userMenuChoice == 2:
+        playlist_generate(playlist_link_input)
 
-    speaker.Speak("Select download location")
-    download_location = filedialog.askdirectory()
+    elif int(userMenuChoice) == 2:
 
-    speaker.Speak("Enter the video link")
-    video_link_input = input('Enter the video link: ')
+        speaker.Speak("Select download location")
+        download_location = filedialog.askdirectory()
 
-    video_download(video_link_input)
+        speaker.Speak("Enter the video link")
+        video_link_input = input('Enter the video link: ')
 
-    speaker.Speak("Video downloaded")
+        video_download(video_link_input)
+
+        speaker.Speak("Video downloaded")
+    else:
+        quit()
+
+    speaker.Speak("Do you want to use Pytuber again")
+    use_again = input("Enter Y/y for Yes any other key for No: ")
 else:
     quit()
