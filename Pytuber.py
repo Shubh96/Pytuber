@@ -3,11 +3,11 @@
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 import requests
+from requests.exceptions import *
 from bs4 import BeautifulSoup
 import win32com.client as wincl
 from tkinter import *
 from tkinter import filedialog
-import re
 
 # ========================initializing the speaker voice and validation regex===========================
 speaker = wincl.Dispatch("SAPI.SpVoice")
@@ -23,30 +23,45 @@ def video_download(download_url):
         speaker.Speak("Downloading Video")
         dl_video_stream.download(download_location)
     except RegexMatchError:
-        take_input()
+        take_video_link_input()
 
 
-def take_input():
+def take_video_link_input():
     speaker.Speak("Invalid URL! Please enter a YouTube video link")
     video_link = input('Enter the video link: ')
     video_download(video_link)
+
+def take_playlist_link_input():
+    speaker.Speak("Please enter a proper YouTube playlist")
+    global playlist_link_input
+    playlist_link_input = input('Enter playlist link: ')
+    playlist_generate(playlist_link_input)
+
 # ===========================function definition to generate playlist by web scraping==========================
 
 
-def playlist_generate():
-    html_doc = requests.get(playlist_link_input).text
-    parsed_doc = BeautifulSoup(html_doc, 'html.parser')
-    playlist_anchor = parsed_doc('a', {'class': 'pl-video-title-link'})
+def playlist_generate(pl_link):
+    try:
+        html_doc = requests.get(pl_link).text
+        parsed_doc = BeautifulSoup(html_doc, 'html.parser')
+        playlist_anchor = parsed_doc('a', {'class': 'pl-video-title-link'})
 
-    if len(playlist_anchor) == 0:
-        playlist_anchor = parsed_doc('a', {'class': 'playlist-video'})
+        if len(playlist_anchor) == 0:
+            playlist_anchor = parsed_doc('a', {'class': 'playlist-video'})
 
-    return playlist_anchor
+        while len(playlist_anchor) == 0:
+            take_playlist_link_input()
+        else:
+            create_playlist(playlist_anchor)
+
+        return
+    except (HTTPError,  ProxyError, MissingSchema, InvalidURL, ConnectionError, Timeout, URLRequired, TooManyRedirects, InvalidSchema):
+        take_playlist_link_input()
 
 # ===========================function definition to create playlist by web scraping==========================
 
 
-def create_playlist():
+def create_playlist(pl_anchor):
     playlist = []
 
     for pla in pl_anchor:
@@ -60,11 +75,13 @@ def create_playlist():
 
         video_download(pl)
 
-        if i < length:
+        if (i+1) < length:
             speech = "Video " + str(i + 1) + "downloaded."
             speaker.Speak(speech)
         else:
             speaker.Speak("Completed downloading playlist")
+
+    return
 
 
 # ========================================global statements========================================
@@ -88,14 +105,13 @@ if userMenuChoice == 1:
     speaker.Speak("Enter the playlist link")
     playlist_link_input = input('Enter the playlist link: ')
 
-    pl_anchor = playlist_generate()
+    playlist_generate(playlist_link_input)
 
-    while len(pl_anchor) == 0:
-        speaker.Speak("Invalid URL! Please enter a YouTube playlist")
-        playlist_link_input = input('Enter the playlist link: ')
-        pl_anchor = playlist_generate()
+    '''while len(pl_anchor) == 0:
+        take_playlist_link_input()
+        pl_anchor = playlist_generate(playlist_link_input)
     else:
-        create_playlist()
+        create_playlist()'''
 
 elif userMenuChoice == 2:
 
