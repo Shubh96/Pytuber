@@ -1,23 +1,48 @@
+# ==================================import statements====================================
+
 from pytube import YouTube
 import requests
 from bs4 import BeautifulSoup
 import win32com.client as wincl
 from tkinter import *
 from tkinter import filedialog
+import re
 
+# ========================initializing the speaker voice and validation regex===========================
 speaker = wincl.Dispatch("SAPI.SpVoice")
+ytvideo_regex = '^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$'
 
 
-def video_download(video_link_input):
-    yt_object = YouTube(video_link_input)
+# ==================================function definition to download video==============================
+
+def video_download(download_url):
+    yt_object = YouTube(download_url)
     dl_video_stream = yt_object.streams.first()
     dl_video_stream.download(download_location)
 
+
+# ==================================function definition to validate video==============================
+
+def validate_video_url(video_link):
+    matched = re.search(ytvideo_regex, video_link)
+
+    if matched is None:
+        speaker.Speak("Invalid URL! Please enter a YouTube video URL")
+        video_link = input('Enter the video link: ')
+        return validate_video_url(video_link)
+    else:
+        return video_link
+
+
+# ===========================function definition to generate playlist by web scraping==========================
 
 def playlist_generate():
     html_doc = requests.get(playlist_link_input).text
     parsed_doc = BeautifulSoup(html_doc, 'html.parser')
     playlist_anchor = parsed_doc('a', {'class': 'pl-video-title-link'})
+
+    if len(playlist_anchor) == 0:
+        playlist_anchor = parsed_doc('a', {'class': 'playlist-video'})
 
     playlist = []
 
@@ -38,6 +63,8 @@ def playlist_generate():
         else:
             speaker.Speak("Completed downloading playlist")
 
+
+# ========================================global statements========================================
 
 speaker.Speak("Press 1 to download a playlist")
 print("1. Download a playlist")
@@ -63,13 +90,14 @@ if userMenuChoice == 1:
 elif userMenuChoice == 2:
 
     speaker.Speak("Enter the video link")
-    playlist_link_input = input('Enter the video link: ')
+    video_link_input = input('Enter the video link: ')
+    video_link_input = validate_video_url(video_link_input)
 
     speaker.Speak("Select download location")
     download_location = filedialog.askdirectory()
 
     speaker.Speak("Downloading Video")
-    video_download(playlist_link_input)
+    video_download(video_link_input)
 
     speaker.Speak("Video downloaded")
 else:
