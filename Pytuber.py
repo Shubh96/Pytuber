@@ -1,5 +1,4 @@
 # ==================================import statements====================================
-
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 import requests
@@ -13,8 +12,6 @@ from tkinter import filedialog
 speaker = wincl.Dispatch("SAPI.SpVoice")
 
 # ==================================function definition to download video==============================
-
-
 def video_download(download_url):
     try:
         yt_object = YouTube(download_url)
@@ -25,21 +22,20 @@ def video_download(download_url):
     except RegexMatchError:
         take_video_link_input()
 
-
+#  ==================================function definition to take correct video link input==============================
 def take_video_link_input():
     speaker.Speak("Invalid URL! Please enter a YouTube video link")
     video_link = input('Enter the video link: ')
     video_download(video_link)
 
+#  ==================================function definition to take correct playlist link input==============================
 def take_playlist_link_input():
     speaker.Speak("Please enter a proper YouTube playlist")
     global playlist_link_input
     playlist_link_input = input('Enter playlist link: ')
     playlist_generate(playlist_link_input)
 
-# ===========================function definition to generate playlist by web scraping==========================
-
-
+# ===========================function definition to generate video links by web scraping==========================
 def playlist_generate(pl_link):
     try:
         html_doc = requests.get(pl_link).text
@@ -58,9 +54,7 @@ def playlist_generate(pl_link):
     except (HTTPError,  ProxyError, MissingSchema, InvalidURL, ConnectionError, Timeout, URLRequired, TooManyRedirects, InvalidSchema):
         take_playlist_link_input()
 
-# ===========================function definition to create playlist by web scraping==========================
-
-
+# ======================================function definition to create playlist=====================================
 def create_playlist(pl_anchor):
     playlist = []
 
@@ -83,7 +77,10 @@ def create_playlist(pl_anchor):
 
     return
 
-
+#========================================================exit function=========================================
+def quit():
+    speaker.Speak("Thanks for using Pytuber.")
+    sys.exit(0)
 # ========================================global statements========================================
 
 speaker.Speak("Press 1 to download a playlist")
@@ -95,7 +92,11 @@ print("2. Download single video")
 speaker.Speak("Press any other key to exit")
 print("Press any other key to exit")
 
-userMenuChoice = int(input("Enter your choice: "))
+userMenuChoice = input("Enter your choice: ")
+
+while not userMenuChoice.isdigit():
+    speaker.Speak("Invalid choice. Please, enter a digit")
+    userMenuChoice = input("Enter your choice: ")
 
 if userMenuChoice == 1:
 
@@ -106,12 +107,6 @@ if userMenuChoice == 1:
     playlist_link_input = input('Enter the playlist link: ')
 
     playlist_generate(playlist_link_input)
-
-    '''while len(pl_anchor) == 0:
-        take_playlist_link_input()
-        pl_anchor = playlist_generate(playlist_link_input)
-    else:
-        create_playlist()'''
 
 elif userMenuChoice == 2:
 
@@ -125,5 +120,4 @@ elif userMenuChoice == 2:
 
     speaker.Speak("Video downloaded")
 else:
-    speaker.Speak("Thanks for using Pytuber.")
-    sys.exit(0)
+    quit()
