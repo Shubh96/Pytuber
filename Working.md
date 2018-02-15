@@ -1,4 +1,5 @@
 # How Pytuber works
+This documentation gives a description about how this project works. It has been divided into three parts viz a viz *Downloading single video*, *Downloading a playlist* and *Handling Exceptions* in the code.
 ## Downloading single video
 **LINE 2:** ```from pytube import YouTube``` imports the necessary modules for connecting to YouTube via the video URL.
 
