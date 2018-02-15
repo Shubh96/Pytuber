@@ -21,7 +21,7 @@ This section gives an overview of the project dependencies and the development e
 
 ## Installation
 If you are a developer, and you want to use the code for modifying it and making your own version of it, then you would have to install a few modules to be able to work with the code; as the modules that I have used don't come by default with Python Installation. The installation and any details that i discuss here are for windows development environment. You can Google out the results for other OS or wait for we to update it here.
-In order to install the modules you have to open command prompt in administrator mode (if you have not provided full access to CMD by default).
+In order to install the modules you have to open command prompt in administrator mode (if you have not provided full access to CMD by default). But before heading forward to install any module, make sure you have the *__python package manager__* viz a viz **pip** installed in your system. You can check that by typing ```pip --version``` in command prompt and it will show you the version installed (if you have any). If you don't have it then see [Getting pip installed](https://pip.pypa.io/en/stable/installing/).Once you have pip installed, you can continue with the steps below.
 
 * Type ```pip install beautifulsoup4``` and press enter to install **BeautifulSoup** or download the proper version from https://pypi.python.org/pypi/beautifulsoup4 
 
@@ -30,3 +30,30 @@ In order to install the modules you have to open command prompt in administrator
 * Type ```pip install pytube``` and press enter to install **pytube** or visit https://pypi.python.org/pypi/pytube/ and download the module.
 
 * Type ```pip install pypiwin32``` and press enter to install **win32com** or visit https://pypi.python.org/pypi/pypiwin32 and download the module.
+
+## Usage
+If you want to use my project not for any development purpose but for downloading videos then there are two obvious ways to it. First is you can directly contact me and I can send you the executable along with the necessary files for the project to run. The second method is that you copy the entire source code (the latest version of course) and save it as a python file. Then you can convert it into an executable as described below.
+
+### Making executable file from python script
+There are several ways to convert a python script into an executable. I shal briefly describe only few of them here.
+#### Using py2exe
+First of all, in order to use this method you must have **Python 3.4** or below; as py2exe is not currently compatible with versions higher than that. Also ensure that you have the environment variable set for python.
+1. __Installing the py2exe module:__ Run command prompt in administrator mode and type ```pip install py2exe``` and press enter. This will install py2exe in your system.
+2. __Writing the setup script:__ Go to the location where you have you *.py* file made which you tend to convert to *.exe*.  In the same location you create one more file named **setup.py** and put the code below into that setup.py file.
+```
+from distutils.core import setup
+import py2exe
+setup(console=['filename.py'])
+```
+Here **_filename.py_** is the .py file you want to convert to exe.
+3. __Final step:__ Open command prompt in administrator mode and type ```python setup.py py2exe``` and press enter. This will get your exe file made.
+
+#### Using pyinstaller
+Pyinstaller is what I have used to convert my python script into executable file. It also has a lot of options to work around with. Just follow the steps as mentioned below to convert you file into an exe.
+1. __Installing the pyinstaller module:__ Run command prompt in administrator mode and type ```pip install pyinstaller``` and press enter. This will install pyinstaller in your system.
+2. __Converting into excutable:__ Go to the location where you have you *.py* file made which you tend to convert to *.exe*.  Open command prompt in administrator mode here and type ```pyinstaller filename.py``` for basic executable file. It will convert you script into executable and that you can find inside **dist** folder.
+3. __Adding icon to executable:__ If you want to add an icon to you executable then first put the icon in the same folder as the script. Now, type ```pyinstaller filename.py --icon IconFile.ico```. Here IconFile.ico is the icon file.
+4. __Creating a single file:__ If you wish to have all the dependencies and packages compressed and built into a single exe file then use ```pyinstaller --onefile filename.py```. This will create only one executable file and nothing else. Doing this would make your application a little slower details of which you can find [here](https://pythonhosted.org/PyInstaller/operating-mode.html#how-the-one-file-program-works)
+5. __Creating a single directory:__ Even by default, the pyinstaller creates one folder into which all files are included. But, if you want to do that using some options then you can type ```pyinstaller --onedir filename.py```. This will make no difference to the speed at which you application runs. Details of this you can find [here](https://pythonhosted.org/PyInstaller/operating-mode.html#bundling-to-one-folder)
+ 
+ If you wish to use several options together then you can do that by separating them with spaces like ```pyinstaller --option1 --option2``` and so on.
