@@ -57,3 +57,5 @@ Pyinstaller is what I have used to convert my python script into executable file
 5. __Creating a single directory:__ Even by default, the pyinstaller creates one folder into which all files are included. But, if you want to do that using some options then you can type ```pyinstaller --onedir filename.py```. This will make no difference to the speed at which you application runs. Details of this you can find [here](https://pythonhosted.org/PyInstaller/operating-mode.html#bundling-to-one-folder)
  
  If you wish to use several options together then you can do that by separating them with spaces like ```pyinstaller --option1 --option2``` and so on.
+
+See [How the project works](https://github.com/Shubh96/Pytuber/blob/master/Working.md)
