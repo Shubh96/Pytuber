@@ -21,3 +21,8 @@ This documentation gives a description about how this project works. It has been
 if len(playlist_anchor) == 0:
   playlist_anchor = parsed_doc('a', {'class': 'playlist-video'})
 ``` 
+
+## Handling Exceptions
+**LINE 22:** ```except RegexMatchError``` is an exception which is generated if the video URL entered to be downloaded is not correct. This exception is raised by the Pytube module and in order to handle it I have imported pytube.exceptions. If this exception is encountered then the user will be asked to enter the proper URL of a YouTube video again.
+
+**LINE 54:** ```except (HTTPError,  ProxyError, MissingSchema, InvalidURL, ConnectionError, Timeout, URLRequired, TooManyRedirects, InvalidSchema)``` is used to handle the exceptions that get thrown by the ```requests.get(URL)``` method. There can be several exceptions and as of now all have been handled at once in general, which asks the user to enter a proper YouTube playlist URL. For instance if we enter any invalid URL then an HTTP excepton is raised because the request cannot be sent via the HTTP/1.1 protocol where 1.1 specifies the protovcol version.
